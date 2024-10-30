@@ -38,7 +38,10 @@ function useSteps() {
         console.log(step)
     }
     
-    const handlePrevious = () => setStep((prev) => prev - 1);
+    const handlePrevious = () => {
+        setStep((prev) => prev - 1);
+        localStorage.setItem("values", JSON.stringify(values));
+    }
 
     const handleSave = () => {
         localStorage.setItem("values", JSON.stringify(values));
