@@ -12,37 +12,45 @@ function useSteps() {
     });
 
     useEffect(() => {
-        const storedValues = {
-            name: localStorage.getItem('name') || '',
-            surname: localStorage.getItem('surname') || '',
-            age: localStorage.getItem('age') || '',
-            gender: localStorage.getItem('gender') || '',
-            companyName: localStorage.getItem('company-name') || '',
-            companyCode: localStorage.getItem('company-code') || ''
+        const storedValues = JSON.parse(localStorage.getItem('values')) || {
+            name: '',
+            surname: '',
+            age: '',
+            gender: '',
+            companyName: '',
+            companyCode: ''
         };
+        console.log(storedValues);
         setValues(storedValues);
     }, []);
 
     const saveValues = (newValues) => {
-        setValues((prevValues) => {
-            const updatedValues = { ...prevValues, ...newValues };
-            for (let key in newValues) {
-                localStorage.setItem( key, newValues[key]);
-            }
-            return updatedValues;
-        });
+        setValues((prevValues) =>  ({ ...prevValues, ...newValues }));
     };
+
+    console.log("values", values);
 
     const handleNext = () => {
         setStep((prev) => prev + 1);
-        console.log(values);
+        localStorage.setItem("values", JSON.stringify(values));
+        
+        console.log("next values", values);
         console.log(step)
     }
     
     const handlePrevious = () => setStep((prev) => prev - 1);
+
     const handleSave = () => {
-        localStorage.clear();
+        localStorage.setItem("values", JSON.stringify(values));
         setStep(1);
+        setValues({
+            name: '',
+            surname: '',
+            age: '',
+            gender: '',
+            companyName: '',
+            companyCode: ''
+        });
     };
 
     return {
